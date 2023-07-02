@@ -24,6 +24,7 @@ const initialState = {
 
 const RegistrationScreen = () => {
   const [focusedField, setFocusedField] = useState('');
+  const [isHidden, setIsHidden] = useState(true);
   const [state, setState] = useState(initialState);
 
   const handleFocus = name => {
@@ -108,17 +109,27 @@ const RegistrationScreen = () => {
                 }
                 value={state.email}
               />
-              <TextInput
-                style={getTextInputStyle('password')}
-                placeholder="Password"
-                placeholderTextColor={'#BDBDBD'}
-                secureTextEntry={true}
-                onFocus={() => handleFocus('password')}
-                onChangeText={text =>
-                  setState(prev => ({ ...prev, password: text }))
-                }
-                value={state.password}
-              />
+              <View>
+                <TextInput
+                  style={getTextInputStyle('password')}
+                  placeholder="Password"
+                  placeholderTextColor={'#BDBDBD'}
+                  secureTextEntry={isHidden ? true : false}
+                  onFocus={() => handleFocus('password')}
+                  onChangeText={text =>
+                    setState(prev => ({ ...prev, password: text }))
+                  }
+                  value={state.password}
+                />
+                <CustomButton
+                  style={styles.shownButton}
+                  title={isHidden ? 'Show' : 'Hide'}
+                  textStyle={styles.shownButtonText}
+                  onPress={() => {
+                    setIsHidden(!isHidden);
+                  }}
+                />
+              </View>
               <View
                 style={{
                   display: focusedField ? 'none' : 'flex',
@@ -201,6 +212,15 @@ const styles = StyleSheet.create({
     lineHeight: 19,
     color: '#1B4371',
     fontFamily: 'Roboto',
+  },
+  shownButton: {
+    position: 'absolute',
+    backgroundColor: 'transparent',
+    right: 16,
+    padding: 12,
+  },
+  shownButtonText: {
+    color: '#1B4371',
   },
 });
 

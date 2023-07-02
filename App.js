@@ -17,9 +17,9 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      {/* <RegistrationScreen></RegistrationScreen> */}
+      <RegistrationScreen></RegistrationScreen>
       {/* <LoginScreen> </LoginScreen> */}
-      <PostsScreen></PostsScreen>
+      {/* <PostsScreen></PostsScreen> */}
       <StatusBar style="auto" />
     </View>
   );
