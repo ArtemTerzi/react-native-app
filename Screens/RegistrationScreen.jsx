@@ -1,20 +1,16 @@
 import {
-  ImageBackground,
   StyleSheet,
   TextInput,
   Text,
   View,
-  Dimensions,
   Keyboard,
   KeyboardAvoidingView,
   Platform,
   TouchableWithoutFeedback,
 } from 'react-native';
-import image from '../assets/bg.png';
 import CustomButton from './components/CustomButton';
 import { useEffect, useState } from 'react';
-
-const { width, height } = Dimensions.get('window');
+import CustomImageBackground from './components/CustomImageBackground';
 
 const initialState = {
   login: '',
@@ -82,71 +78,65 @@ const RegistrationScreen = () => {
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
-          <ImageBackground
-            source={image}
-            resizeMode="cover"
-            style={styles.image}
-          >
-            <View style={styles.formWrapper}>
-              <Text style={styles.titleText}>Registration</Text>
+          <CustomImageBackground>
+            <Text style={styles.titleText}>Registration</Text>
+            <TextInput
+              style={getTextInputStyle('login')}
+              placeholder="Login"
+              placeholderTextColor={'#BDBDBD'}
+              onFocus={() => handleFocus('login')}
+              onChangeText={text =>
+                setState(prev => ({ ...prev, login: text }))
+              }
+              value={state.login}
+            />
+            <TextInput
+              style={getTextInputStyle('email')}
+              placeholder="Email adress"
+              placeholderTextColor={'#BDBDBD'}
+              onFocus={() => handleFocus('email')}
+              onChangeText={text =>
+                setState(prev => ({ ...prev, email: text }))
+              }
+              value={state.email}
+            />
+            <View>
               <TextInput
-                style={getTextInputStyle('login')}
-                placeholder="Login"
+                style={getTextInputStyle('password')}
+                placeholder="Password"
                 placeholderTextColor={'#BDBDBD'}
-                onFocus={() => handleFocus('login')}
+                secureTextEntry={isHidden ? true : false}
+                onFocus={() => handleFocus('password')}
                 onChangeText={text =>
-                  setState(prev => ({ ...prev, login: text }))
+                  setState(prev => ({ ...prev, password: text }))
                 }
-                value={state.login}
+                value={state.password}
               />
-              <TextInput
-                style={getTextInputStyle('email')}
-                placeholder="Email adress"
-                placeholderTextColor={'#BDBDBD'}
-                onFocus={() => handleFocus('email')}
-                onChangeText={text =>
-                  setState(prev => ({ ...prev, email: text }))
-                }
-                value={state.email}
+              <CustomButton
+                style={styles.shownButton}
+                title={isHidden ? 'Show' : 'Hide'}
+                textStyle={styles.shownButtonText}
+                onPress={() => {
+                  setIsHidden(!isHidden);
+                }}
               />
-              <View>
-                <TextInput
-                  style={getTextInputStyle('password')}
-                  placeholder="Password"
-                  placeholderTextColor={'#BDBDBD'}
-                  secureTextEntry={isHidden ? true : false}
-                  onFocus={() => handleFocus('password')}
-                  onChangeText={text =>
-                    setState(prev => ({ ...prev, password: text }))
-                  }
-                  value={state.password}
-                />
-                <CustomButton
-                  style={styles.shownButton}
-                  title={isHidden ? 'Show' : 'Hide'}
-                  textStyle={styles.shownButtonText}
-                  onPress={() => {
-                    setIsHidden(!isHidden);
-                  }}
-                />
-              </View>
-              <View
+            </View>
+            <View
+              style={{
+                display: focusedField ? 'none' : 'flex',
+              }}
+            >
+              <CustomButton title="Sign up" onPress={handleSubmit} />
+              <Text
                 style={{
-                  display: focusedField ? 'none' : 'flex',
+                  ...styles.underFormText,
+                  marginBottom: focusedField ? 32 : 45,
                 }}
               >
-                <CustomButton title="Sign up" onPress={handleSubmit} />
-                <Text
-                  style={{
-                    ...styles.underFormText,
-                    marginBottom: focusedField ? 32 : 45,
-                  }}
-                >
-                  Already have an account? Sign In
-                </Text>
-              </View>
+                Already have an account? Sign In
+              </Text>
             </View>
-          </ImageBackground>
+          </CustomImageBackground>
         </KeyboardAvoidingView>
       </View>
     </TouchableWithoutFeedback>
@@ -157,23 +147,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     resizeMode: 'cover',
-  },
-  image: {
-    flex: 1,
-    width: width,
-    height: height,
-    resizeMode: 'cover',
-  },
-  formWrapper: {
-    position: 'absolute',
-    bottom: 0,
-    width: width,
-    paddingLeft: 16,
-    paddingRight: 16,
-    borderTopRightRadius: 25,
-    borderTopLeftRadius: 25,
-    backgroundColor: '#FFFFFF',
-    justifyContent: 'flex-end',
   },
   titleText: {
     fontWeight: 500,
@@ -196,7 +169,6 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     borderColor: '#E8E8E8',
     marginBottom: 16,
-    fontFamily: 'Roboto',
   },
   focusedInput: {
     borderColor: '#FF6C00',
@@ -211,7 +183,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 19,
     color: '#1B4371',
-    fontFamily: 'Roboto',
   },
   shownButton: {
     position: 'absolute',
