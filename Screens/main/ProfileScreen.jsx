@@ -1,5 +1,4 @@
-import { View, Text } from 'react-native';
-import { StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 
 const ProfileScreen = () => {
   return (
@@ -15,7 +14,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    fontFamily: 'Roboto',
   },
   underFormText: {
     textAlign: 'center',

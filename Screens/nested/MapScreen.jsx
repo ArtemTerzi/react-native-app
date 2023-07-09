@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 
 const MapScreen = ({ route }) => {
@@ -7,7 +7,7 @@ const MapScreen = ({ route }) => {
     : { longitude: 30.523844, latitude: 50.450047 };
 
   return (
-    <View style={styles.mainContainer}>
+    <View style={{ flex: 1 }}>
       <MapView
         style={{ flex: 1 }}
         region={{
@@ -22,18 +22,5 @@ const MapScreen = ({ route }) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-  },
-  underFormText: {
-    textAlign: 'center',
-    fontWeight: 400,
-    fontSize: 16,
-    lineHeight: 19,
-    color: '#1B4371',
-  },
-});
 
 export default MapScreen;

@@ -50,32 +50,7 @@ const HomeScreen = () => {
       <MainStack.Screen
         name="Posts"
         component={PostsScreen}
-        options={{
-          title: 'Publications',
-          headerStyle: {
-            borderBottomColor: 'rgba(0, 0, 0, 0.30)',
-            borderBottomWidth: 1,
-          },
-          headerTintStyle: {
-            fontSize: 17,
-            fontWeight: 500,
-            lineHeight: 22,
-            paddingLeft: 48,
-            paddingRight: 48,
-            paddingTop: 11,
-            paddingBottom: 11,
-          },
-          headerTitleAlign: 'center',
-          headerRight: () => (
-            <Feather
-              onPress={() => navigation.navigate('Login')}
-              name="log-out"
-              size={24}
-              color="rgba(33, 33, 33, 0.8)"
-              style={{ marginRight: 16 }}
-            />
-          ),
-        }}
+        options={{ headerShown: false }}
       />
 
       <MainStack.Screen
@@ -99,7 +74,7 @@ const HomeScreen = () => {
           headerTitleAlign: 'center',
           headerLeft: () => (
             <Feather
-              onPress={() => navigation.navigate('DefaultScreen')}
+              onPress={() => navigation.navigate('Publications')}
               name="arrow-left"
               size={24}
               color="rgba(33, 33, 33, 0.8)"

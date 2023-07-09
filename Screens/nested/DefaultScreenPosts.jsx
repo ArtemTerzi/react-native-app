@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Post from '../../components/Post';
 
@@ -15,7 +15,7 @@ const DefaultScreenPosts = ({ route }) => {
     }
   }, [route.params]);
 
-  const onCommentPress = () => navigation.navigate('Comments');
+  const onCommentPress = photo => navigation.navigate('Comments', { photo });
 
   const onLocationPress = location => navigation.navigate('Map', { location });
 

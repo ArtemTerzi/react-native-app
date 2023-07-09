@@ -11,7 +11,7 @@ const Post = ({ item, onCommentPress, onLocationPress }) => {
       <Text style={styles.name}>{item.name}</Text>
       <View style={styles.postInfoWrapper}>
         <View style={styles.postInfo}>
-          <TouchableOpacity onPress={onCommentPress}>
+          <TouchableOpacity onPress={() => onCommentPress(item.photo)}>
             <Feather
               name="message-circle"
               size={24}

@@ -1,9 +1,15 @@
-import { StyleSheet, Image, View, Text } from 'react-native';
+import {
+  StyleSheet,
+  Image,
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native';
 import { useEffect, useState } from 'react';
 import { Camera, CameraType } from 'expo-camera';
-import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
-
 import { useNavigation } from '@react-navigation/native';
+
 import * as MediaLibrary from 'expo-media-library';
 import * as Location from 'expo-location';
 
@@ -49,7 +55,7 @@ const CreatePostsScreen = () => {
   useEffect(() => {
     if (photo && name && place && location) setIsDisabled(false);
     else setIsDisabled(true);
-  }, [photo, name, place]);
+  }, [photo, name, place, location]);
 
   const takePhoto = async () => {
     if (camera) {
@@ -64,7 +70,7 @@ const CreatePostsScreen = () => {
   };
 
   const sendPhoto = () => {
-    navigation.navigate('DefaultScreen', { photo, name, place, location });
+    navigation.navigate('Publications', { photo, name, place, location });
   };
 
   if (hasPermission === null) {
@@ -129,12 +135,6 @@ const CreatePostsScreen = () => {
             disabled={isDisabled}
           />
         </View>
-        <View
-          style={{
-            alignItems: 'center',
-            marginTop: 70,
-          }}
-        ></View>
       </View>
     </View>
   );
