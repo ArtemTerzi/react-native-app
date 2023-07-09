@@ -1,9 +1,9 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { View, StyleSheet } from 'react-native';
 
-import PostsScreen from './main/PostsScreen';
-import CreatePostsScreen from './main/CreatePostsScreen';
-import ProfileScreen from './main/ProfileScreen';
+import PostsScreen from '../main/PostsScreen';
+import CreatePostsScreen from '../main/CreatePostsScreen';
+import ProfileScreen from '../main/ProfileScreen';
 
 import { Feather, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -72,13 +72,42 @@ const HomeScreen = () => {
               name="log-out"
               size={24}
               color="rgba(33, 33, 33, 0.8)"
-              style={{ marginRight: 10 }}
+              style={{ marginRight: 16 }}
             />
           ),
         }}
       />
 
-      <MainStack.Screen name="CreatePosts" component={CreatePostsScreen} />
+      <MainStack.Screen
+        name="CreatePosts"
+        component={CreatePostsScreen}
+        options={{
+          title: 'Create a publication',
+          headerStyle: {
+            borderBottomColor: 'rgba(0, 0, 0, 0.30)',
+            borderBottomWidth: 1,
+          },
+          headerTintStyle: {
+            fontSize: 17,
+            fontWeight: 500,
+            lineHeight: 22,
+            paddingLeft: 48,
+            paddingRight: 48,
+            paddingTop: 11,
+            paddingBottom: 11,
+          },
+          headerTitleAlign: 'center',
+          headerLeft: () => (
+            <Feather
+              onPress={() => navigation.navigate('DefaultScreen')}
+              name="arrow-left"
+              size={24}
+              color="rgba(33, 33, 33, 0.8)"
+              style={{ marginLeft: 16 }}
+            />
+          ),
+        }}
+      />
       <MainStack.Screen name="Profile" component={ProfileScreen} />
     </MainStack.Navigator>
   );

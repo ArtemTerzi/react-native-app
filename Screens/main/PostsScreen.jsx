@@ -1,34 +1,26 @@
-import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
+import { createStackNavigator } from '@react-navigation/stack';
+import DefaultScreenPosts from '../nested/DefaultScreenPosts';
+import CommentsScreen from '../nested/CommentsScreen';
+import MapScreen from '../nested/MapScreen';
+
+const NestedScreen = createStackNavigator();
 
 const PostsScreen = () => {
   return (
-    <TouchableWithoutFeedback
-      onPress={() => {
-        console.log('I press it');
-      }}
-    >
-      <View style={styles.mainContainer}>
-        <Text style={styles.underFormText}>PostsScreen</Text>
-      </View>
-    </TouchableWithoutFeedback>
+    <NestedScreen.Navigator initialRouteName="DefaultScreen">
+      <NestedScreen.Screen
+        name="DefaultScreen"
+        component={DefaultScreenPosts}
+        options={{ headerShown: false }}
+      />
+      <NestedScreen.Screen name="Comments" component={CommentsScreen} />
+      <NestedScreen.Screen
+        name="Map"
+        component={MapScreen}
+        options={{ headerShown: false }}
+      />
+    </NestedScreen.Navigator>
   );
 };
-
-const styles = StyleSheet.create({
-  mainContainer: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-    fontFamily: 'Roboto',
-  },
-  underFormText: {
-    textAlign: 'center',
-    fontWeight: 400,
-    fontSize: 16,
-    lineHeight: 19,
-    color: '#1B4371',
-  },
-});
 
 export default PostsScreen;

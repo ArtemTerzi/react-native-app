@@ -1,0 +1,57 @@
+import { useNavigation } from '@react-navigation/native';
+import { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
+import Post from '../../components/Post';
+
+const DefaultScreenPosts = ({ route }) => {
+  const [posts, setPosts] = useState([]);
+
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    if (route.params) {
+      setPosts(prevState => [...prevState, route.params]);
+    }
+  }, [route.params]);
+
+  const onCommentPress = () => navigation.navigate('Comments');
+
+  const onLocationPress = location => navigation.navigate('Map', { location });
+
+  return (
+    <View style={styles.mainContainer}>
+      <View style={styles.mainContent}>
+        <FlatList
+          data={posts}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <Post
+              item={item}
+              onCommentPress={onCommentPress}
+              onLocationPress={onLocationPress}
+            />
+          )}
+        />
+      </View>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: 'white',
+  },
+  mainContent: { flex: 1, marginHorizontal: 16 },
+  underFormText: {
+    textAlign: 'center',
+    fontWeight: 400,
+    fontSize: 16,
+    lineHeight: 19,
+    color: '#1B4371',
+  },
+});
+
+export default DefaultScreenPosts;

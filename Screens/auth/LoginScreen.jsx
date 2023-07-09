@@ -5,7 +5,6 @@ import CustomButton from '../../components/CustomButton';
 import CustomImageBackground from '../../components/CustomImageBackground';
 import { TouchableOpacity } from 'react-native';
 import { authStyles } from './authStyles';
-import { useRoute } from '../../router';
 
 const initialState = {
   email: '',
