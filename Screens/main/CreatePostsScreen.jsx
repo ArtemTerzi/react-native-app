@@ -18,6 +18,10 @@ import CustomButton from '../../components/CustomButton';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
 
+import db from '../../firebase/config';
+import uuid from 'react-native-uuid';
+import { getAuthState } from '../../redux/selectors/selectors';
+
 const CreatePostsScreen = () => {
   const [hasPermission, setHasPermission] = useState(null);
   const [camera, setCamera] = useState(null);
@@ -28,6 +32,8 @@ const CreatePostsScreen = () => {
   const [isDisabled, setIsDisabled] = useState(true);
 
   const navigation = useNavigation();
+
+  const { userId, login } = getAuthState();
 
   useEffect(() => {
     (async () => {
@@ -63,14 +69,42 @@ const CreatePostsScreen = () => {
       await MediaLibrary.createAssetAsync(uri);
 
       const location = await Location.getCurrentPositionAsync();
-      console.log(location);
+      setLocation({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      });
 
       setPhoto(uri);
     }
   };
 
-  const sendPhoto = () => {
-    navigation.navigate('Publications', { photo, name, place, location });
+  const sendPhoto = async () => {
+    await uploadPostToServer();
+    navigation.navigate('Publications');
+  };
+
+  const uploadPhotoToServer = async () => {
+    const response = await fetch(photo);
+    const file = await response.blob();
+    const postId = uuid.v4();
+
+    await db.storage().ref(`postsImages/${postId}`).put(file);
+
+    const processedPhoto = await db
+      .storage()
+      .ref(`postsImages/`)
+      .child(postId)
+      .getDownloadURL();
+
+    return processedPhoto;
+  };
+
+  const uploadPostToServer = async () => {
+    const photo = await uploadPhotoToServer();
+    await db
+      .firestore()
+      .collection('posts')
+      .add({ photo, name, place, location, userId, login });
   };
 
   if (hasPermission === null) {

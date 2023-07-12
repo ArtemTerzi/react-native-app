@@ -46,7 +46,6 @@ export const authSignOut = () => async (dispatch, getState) => {
 export const authStateChanged = () => async (dispatch, getState) => {
   firebase.auth().onAuthStateChanged(user => {
     if (user) {
-      console.log(user);
       dispatch(
         authSlice.actions.updateUserProfile({
           userId: user.uid,

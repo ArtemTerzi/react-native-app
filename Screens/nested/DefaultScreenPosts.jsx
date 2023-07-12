@@ -4,16 +4,24 @@ import { StyleSheet, View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import Post from '../../components/Post';
 
+import db from '../../firebase/config';
+
 const DefaultScreenPosts = ({ route }) => {
   const [posts, setPosts] = useState([]);
 
   const navigation = useNavigation();
 
+  const getAllPost = async () => {
+    db.firestore()
+      .collection('posts')
+      .onSnapshot(data =>
+        setPosts(data.docs.map(doc => ({ ...doc.data(), id: doc.id })))
+      );
+  };
+
   useEffect(() => {
-    if (route.params) {
-      setPosts(prevState => [...prevState, route.params]);
-    }
-  }, [route.params]);
+    getAllPost();
+  }, []);
 
   const onCommentPress = photo => navigation.navigate('Comments', { photo });
 
