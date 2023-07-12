@@ -2,7 +2,6 @@ import { StyleSheet } from 'react-native';
 
 export const authStyles = StyleSheet.create({
   titleText: {
-    fontWeight: 500,
     fontSize: 30,
     lineHeight: 35,
     textAlign: 'center',
@@ -38,7 +37,6 @@ export const authStyles = StyleSheet.create({
   },
   underFormText: {
     textAlign: 'center',
-    fontWeight: 400,
     fontSize: 16,
     lineHeight: 19,
     color: '#1B4371',

@@ -1,10 +1,19 @@
-import { TextInput, Text, View, Keyboard } from 'react-native';
+import {
+  TextInput,
+  Text,
+  View,
+  Keyboard,
+  TouchableOpacity,
+} from 'react-native';
 import { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+
 import CustomButton from '../../components/CustomButton';
 import CustomImageBackground from '../../components/CustomImageBackground';
-import { TouchableOpacity } from 'react-native';
 import { authStyles } from './authStyles';
+
+import { authSignIn } from '../../redux/auth/authOperations';
 
 const initialState = {
   email: '',
@@ -17,6 +26,7 @@ const LoginScreen = () => {
   const [state, setState] = useState(initialState);
 
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const handleFocus = name => {
     setFocusedField(name);
@@ -24,10 +34,9 @@ const LoginScreen = () => {
 
   const handleSubmit = () => {
     setFocusedField('');
-    console.log(state);
+    dispatch(authSignIn(state));
     setState(initialState);
     Keyboard.dismiss();
-    navigation.navigate('Home');
   };
 
   useEffect(() => {

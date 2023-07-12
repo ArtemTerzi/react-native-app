@@ -40,6 +40,7 @@ const HomeScreen = () => {
         tabBarHideOnKeyboard: true,
         tabBarShowLabel: false,
         tabBarStyle: {
+          // display: route.name === 'Comments' ? 'none' : 'flex',
           borderTopColor: 'rgba(0, 0, 0, 0.30)',
           borderTopWidth: 1,
           height: 60,
@@ -64,7 +65,6 @@ const HomeScreen = () => {
           },
           headerTintStyle: {
             fontSize: 17,
-            fontWeight: 500,
             lineHeight: 22,
             paddingLeft: 48,
             paddingRight: 48,

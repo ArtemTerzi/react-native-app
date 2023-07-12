@@ -17,7 +17,6 @@ const styles = StyleSheet.create({
   },
   underFormText: {
     textAlign: 'center',
-    fontWeight: 400,
     fontSize: 16,
     lineHeight: 19,
     color: '#1B4371',
