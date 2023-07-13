@@ -4,9 +4,11 @@ import {
   View,
   Keyboard,
   TouchableOpacity,
+  ImageBackground,
 } from 'react-native';
 import { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import * as ImagePicker from 'expo-image-picker';
 
 import CustomButton from '../../components/CustomButton';
 import CustomImageBackground from '../../components/CustomImageBackground';
@@ -15,10 +17,13 @@ import { authStyles } from './authStyles';
 import { useDispatch } from 'react-redux';
 import { authSignUp } from '../../redux/auth/authOperations';
 
+import { AntDesign } from '@expo/vector-icons';
+
 const initialState = {
   login: '',
   email: '',
   password: '',
+  avatar: null,
 };
 
 const RegistrationScreen = () => {
@@ -29,6 +34,34 @@ const RegistrationScreen = () => {
   const dispatch = useDispatch();
 
   const navigation = useNavigation();
+
+  //* The avatar will visible only on that device (because it link on file on disk)
+  //TODO: Create new storage for avatars in firebase
+
+  const uploadAvatar = async () => {
+    let { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (status !== 'granted') {
+      console.log(
+        'Разрешение на использование медиабиблиотеки не предоставлено'
+      );
+      return;
+    }
+
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setState(prev => ({ ...prev, avatar: result.assets[0].uri }));
+    }
+  };
+
+  const deleteAvatar = () => {
+    setState(prev => ({ ...prev, avatar: '' }));
+  };
 
   const handleFocus = name => {
     setFocusedField(name);
@@ -81,6 +114,45 @@ const RegistrationScreen = () => {
         setFocusedField('');
       }}
     >
+      <View>
+        <ImageBackground
+          source={state.avatar ? { uri: state.avatar } : null}
+          style={{
+            position: 'absolute',
+            top: -60,
+            right: '50%',
+            width: 120,
+            height: 120,
+            backgroundColor: '#F6F6F6',
+            borderRadius: 16,
+            elevation: 5,
+            transform: [{ translateX: 60 }],
+          }}
+          imageStyle={{ borderRadius: 16 }}
+        >
+          <TouchableOpacity
+            style={{
+              position: 'absolute',
+              right: -10,
+              bottom: 20,
+              backgroundColor: 'white',
+              borderRadius: 50,
+            }}
+            onPress={uploadAvatar}
+          >
+            {state.avatar ? (
+              <AntDesign
+                name="closecircleo"
+                color="#BDBDBD"
+                size={25}
+                onPress={deleteAvatar}
+              />
+            ) : (
+              <AntDesign name="pluscircleo" color="#FF6C00" size={25} />
+            )}
+          </TouchableOpacity>
+        </ImageBackground>
+      </View>
       <Text style={authStyles.titleText}>Registration</Text>
       <TextInput
         style={getTextInputStyle('login')}
@@ -122,7 +194,11 @@ const RegistrationScreen = () => {
           display: focusedField ? 'none' : 'flex',
         }}
       >
-        <CustomButton title="Sign up" onPress={handleSubmit} />
+        <CustomButton
+          title="Sign up"
+          onPress={handleSubmit}
+          disabled={state.email && state.login && state.password ? false : true}
+        />
         <View style={authStyles.underFormTextWrapper}>
           <Text
             style={{
