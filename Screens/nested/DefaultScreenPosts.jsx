@@ -23,7 +23,8 @@ const DefaultScreenPosts = ({ route }) => {
     getAllPost();
   }, []);
 
-  const onCommentPress = photo => navigation.navigate('Comments', { photo });
+  const onCommentPress = ({ id, photo }) =>
+    navigation.navigate('Comments', { postId: id, photo });
 
   const onLocationPress = location => navigation.navigate('Map', { location });
 

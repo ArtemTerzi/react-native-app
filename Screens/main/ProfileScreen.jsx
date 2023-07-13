@@ -1,6 +1,25 @@
+import { useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
+import db from '../../firebase/config';
+import { getAuthState } from '../../redux/selectors/selectors';
 
 const ProfileScreen = () => {
+  const { userId } = getAuthState();
+
+  useEffect(() => {
+    getUserPosts();
+  }, []);
+
+  const getUserPosts = async () => {
+    await db
+      .firestore()
+      .collection('posts')
+      .where('userId', '==', userId)
+      .onSnapshot(data =>
+        console.log(data.docs.map(doc => ({ ...doc.data() })))
+      );
+  };
+
   return (
     <View style={styles.mainContainer}>
       <Text style={styles.underFormText}>ProfileScreen</Text>

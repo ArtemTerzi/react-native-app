@@ -3,7 +3,7 @@ import { TouchableOpacity, Text, Image, View, StyleSheet } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 
 const Post = ({ item, onCommentPress, onLocationPress }) => {
-  const { location, photo, place, name } = item;
+  const { location, photo, place, name, id } = item;
 
   return (
     <View>
@@ -13,7 +13,7 @@ const Post = ({ item, onCommentPress, onLocationPress }) => {
       <Text style={styles.name}>{name}</Text>
       <View style={styles.postInfoWrapper}>
         <View style={styles.postInfo}>
-          <TouchableOpacity onPress={() => onCommentPress(photo)}>
+          <TouchableOpacity onPress={() => onCommentPress({ id, photo })}>
             <Feather
               name="message-circle"
               size={24}
