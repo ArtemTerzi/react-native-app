@@ -9,6 +9,7 @@ export const authStyles = StyleSheet.create({
     color: '#212121',
     marginTop: 92,
     marginBottom: 32,
+    fontFamily: 'RobotoBold',
   },
   textInput: {
     marginLeft: 'auto',

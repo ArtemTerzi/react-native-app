@@ -5,8 +5,10 @@ import { FlatList } from 'react-native-gesture-handler';
 import Post from '../../components/Post';
 
 import db from '../../firebase/config';
+import MiniUserProfile from '../../components/MiniUserProfile';
+import { getAuthState } from '../../redux/selectors/selectors';
 
-const DefaultScreenPosts = ({ route }) => {
+const DefaultScreenPosts = () => {
   const [posts, setPosts] = useState([]);
 
   const navigation = useNavigation();
@@ -31,6 +33,7 @@ const DefaultScreenPosts = ({ route }) => {
   return (
     <View style={styles.mainContainer}>
       <View style={styles.mainContent}>
+        <MiniUserProfile />
         <FlatList
           data={posts}
           keyExtractor={(item, index) => index.toString()}

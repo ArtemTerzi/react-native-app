@@ -5,6 +5,7 @@ import {
   Keyboard,
   TouchableOpacity,
   ImageBackground,
+  StyleSheet,
 } from 'react-native';
 import { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
@@ -117,29 +118,10 @@ const RegistrationScreen = () => {
       <View>
         <ImageBackground
           source={state.avatar ? { uri: state.avatar } : null}
-          style={{
-            position: 'absolute',
-            top: -60,
-            right: '50%',
-            width: 120,
-            height: 120,
-            backgroundColor: '#F6F6F6',
-            borderRadius: 16,
-            elevation: 5,
-            transform: [{ translateX: 60 }],
-          }}
+          style={styles.avatar}
           imageStyle={{ borderRadius: 16 }}
         >
-          <TouchableOpacity
-            style={{
-              position: 'absolute',
-              right: -10,
-              bottom: 20,
-              backgroundColor: 'white',
-              borderRadius: 50,
-            }}
-            onPress={uploadAvatar}
-          >
+          <TouchableOpacity style={styles.avatarBtn} onPress={uploadAvatar}>
             {state.avatar ? (
               <AntDesign
                 name="closecircleo"
@@ -223,5 +205,26 @@ const RegistrationScreen = () => {
     </CustomImageBackground>
   );
 };
+
+const styles = StyleSheet.create({
+  avatar: {
+    position: 'absolute',
+    top: -60,
+    right: '50%',
+    width: 120,
+    height: 120,
+    backgroundColor: '#F6F6F6',
+    borderRadius: 16,
+    elevation: 3,
+    transform: [{ translateX: 60 }],
+  },
+  avatarBtn: {
+    position: 'absolute',
+    right: -10,
+    bottom: 20,
+    backgroundColor: 'white',
+    borderRadius: 50,
+  },
+});
 
 export default RegistrationScreen;

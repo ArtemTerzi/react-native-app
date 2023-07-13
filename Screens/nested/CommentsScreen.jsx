@@ -5,25 +5,25 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
-  Text,
+  FlatList,
 } from 'react-native';
 import db from '../../firebase/config';
 import { getAuthState } from '../../redux/selectors/selectors';
 
 import { AntDesign } from '@expo/vector-icons';
-import { FlatList } from 'react-native';
+import Comment from '../../components/Comment';
 
 const CommentsScreen = ({ route }) => {
   const [comment, setComment] = useState('');
   const [allComments, setAllComments] = useState([]);
   const { postId, photo } = route.params;
-  const { login } = getAuthState();
+  const { login, userId, avatar } = getAuthState();
 
   useEffect(() => {
-    getALlPosts();
+    getAllPosts();
   }, []);
 
-  const getALlPosts = async () => {
+  const getAllPosts = async () => {
     await db
       .firestore()
       .collection('posts')
@@ -35,12 +35,14 @@ const CommentsScreen = ({ route }) => {
   };
 
   const createPost = async () => {
+    const postTime = new Date().toUTCString();
+
     await db
       .firestore()
       .collection('posts')
       .doc(postId)
       .collection('comments')
-      .add({ comment, login });
+      .add({ comment, postTime, login, userId, avatar });
 
     setComment('');
   };
@@ -53,14 +55,10 @@ const CommentsScreen = ({ route }) => {
         </View>
         <View style={{ flex: 1 }}>
           <FlatList
+            style={{ marginTop: 32, marginBottom: 32 }}
             data={allComments}
             keyExtractor={item => item.id}
-            renderItem={({ item }) => (
-              <View>
-                <Text>{item.login}</Text>
-                <Text>{item.comment}</Text>
-              </View>
-            )}
+            renderItem={({ item }) => <Comment item={item} />}
           />
         </View>
         <View style={styles.commentInputWrapper}>
@@ -84,7 +82,7 @@ const CommentsScreen = ({ route }) => {
               borderRadius: 50,
             }}
           >
-            <AntDesign name="arrowup" size={24} color="white" />
+            <AntDesign name="arrowup" size={20} color="white" />
           </TouchableOpacity>
         </View>
       </View>
@@ -114,12 +112,12 @@ const styles = StyleSheet.create({
   commentInputWrapper: {
     justifyContent: 'center',
     height: 50,
-    backgroundColor: '#E8E8E8',
+    backgroundColor: 'rgba(0, 0, 0, 0.03)',
     borderRadius: 50,
     paddingStart: 16,
     marginBottom: 16,
     borderWidth: 1,
-    borderColor: '#BDBDBD',
+    borderColor: '#E8E8E8',
   },
 });
 
