@@ -6,7 +6,6 @@ import Post from '../../components/Post';
 
 import db from '../../firebase/config';
 import MiniUserProfile from '../../components/MiniUserProfile';
-import { getAuthState } from '../../redux/selectors/selectors';
 
 const DefaultScreenPosts = () => {
   const [posts, setPosts] = useState([]);
@@ -17,9 +16,7 @@ const DefaultScreenPosts = () => {
     db.firestore()
       .collection('posts')
       .onSnapshot(data =>
-        setPosts(
-          data.docs.reverse().map(doc => ({ ...doc.data(), id: doc.id }))
-        )
+        setPosts(data.docs.map(doc => ({ ...doc.data(), id: doc.id })))
       );
   };
 
@@ -31,6 +28,8 @@ const DefaultScreenPosts = () => {
     navigation.navigate('Comments', { postId: id, photo });
 
   const onLocationPress = location => navigation.navigate('Map', { location });
+
+  const onLikePress = id => {};
 
   return (
     <View style={styles.mainContainer}>

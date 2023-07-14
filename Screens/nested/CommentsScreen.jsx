@@ -12,6 +12,7 @@ import { getAuthState } from '../../redux/selectors/selectors';
 
 import { AntDesign } from '@expo/vector-icons';
 import Comment from '../../components/Comment';
+import { sortItemsByPostTime } from '../../services';
 
 const CommentsScreen = ({ route }) => {
   const [comment, setComment] = useState('');
@@ -29,12 +30,13 @@ const CommentsScreen = ({ route }) => {
       .collection('posts')
       .doc(postId)
       .collection('comments')
-      .onSnapshot(data =>
-        setAllComments(data.docs.map(doc => ({ ...doc.data(), id: doc.id })))
-      );
+      .onSnapshot(data => {
+        const comments = data.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+        setAllComments(sortItemsByPostTime(comments));
+      });
   };
 
-  const createPost = async () => {
+  const createComment = async () => {
     const postTime = new Date().toUTCString();
 
     await db
@@ -70,7 +72,7 @@ const CommentsScreen = ({ route }) => {
             />
           </View>
           <TouchableOpacity
-            onPress={createPost}
+            onPress={createComment}
             style={{
               position: 'absolute',
               right: 8,

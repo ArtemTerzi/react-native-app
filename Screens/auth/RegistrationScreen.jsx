@@ -14,6 +14,8 @@ import { useDispatch } from 'react-redux';
 import db from '../../firebase/config';
 import uuid from 'react-native-uuid';
 
+import { validateEmail } from '../../services';
+
 import CustomButton from '../../components/CustomButton';
 import CustomImageBackground from '../../components/CustomImageBackground';
 import { authStyles } from './authStyles';
@@ -32,14 +34,22 @@ const initialState = {
 const RegistrationScreen = () => {
   const [focusedField, setFocusedField] = useState('');
   const [isHidden, setIsHidden] = useState(true);
+  const [error, setError] = useState(null);
   const [state, setState] = useState(initialState);
 
   const dispatch = useDispatch();
 
   const navigation = useNavigation();
 
-  //* The avatar will visible only on that device (because it link on file on disk)
-  //TODO: Create new storage for avatars in firebase
+  useEffect(() => {
+    const keyboardHideListener = Keyboard.addListener('keyboardDidHide', () =>
+      setFocusedField('')
+    );
+
+    return () => {
+      keyboardHideListener.remove();
+    };
+  }, []);
 
   const uploadAvatar = async () => {
     let { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -86,21 +96,16 @@ const RegistrationScreen = () => {
   };
 
   const handleSubmit = () => {
-    setFocusedField('');
-    dispatch(authSignUp(state));
-    Keyboard.dismiss();
-    setState(initialState);
+    if (!validateEmail(state.email)) {
+      setError('Please enter a valid email address');
+    } else {
+      setError(null);
+      setFocusedField('');
+      dispatch(authSignUp(state));
+      Keyboard.dismiss();
+      setState(initialState);
+    }
   };
-
-  useEffect(() => {
-    const keyboardHideListener = Keyboard.addListener('keyboardDidHide', () =>
-      setFocusedField('')
-    );
-
-    return () => {
-      keyboardHideListener.remove();
-    };
-  }, []);
 
   const getTextInputStyle = fieldName => {
     switch (fieldName) {
@@ -160,14 +165,26 @@ const RegistrationScreen = () => {
         onFocus={() => handleFocus('login')}
         onChangeText={text => setState(prev => ({ ...prev, login: text }))}
         value={state.login}
+        required
       />
+      {error && (
+        <Text style={styles.errorMessage}>Please enter a valid email</Text>
+      )}
       <TextInput
-        style={getTextInputStyle('email')}
+        style={[
+          getTextInputStyle('email'),
+          {
+            borderColor: error ? 'red' : '#E8E8E8',
+            backgroundColor: error ? 'rgba(255,0,0,0.3)' : '#F6F6F6',
+          },
+        ]}
         placeholder="Email adress"
         placeholderTextColor={'#BDBDBD'}
         onFocus={() => handleFocus('email')}
         onChangeText={text => setState(prev => ({ ...prev, email: text }))}
         value={state.email}
+        autoComplete="email"
+        required
       />
       <View>
         <TextInput
@@ -178,6 +195,8 @@ const RegistrationScreen = () => {
           onFocus={() => handleFocus('password')}
           onChangeText={text => setState(prev => ({ ...prev, password: text }))}
           value={state.password}
+          autoComplete="password"
+          required
         />
         <CustomButton
           style={authStyles.shownButton}
@@ -241,6 +260,13 @@ const styles = StyleSheet.create({
     bottom: 20,
     backgroundColor: 'white',
     borderRadius: 50,
+  },
+  errorMessage: {
+    color: 'white',
+    backgroundColor: 'red',
+    height: 25,
+    borderRadius: 50,
+    textAlign: 'center',
   },
 });
 

@@ -3,14 +3,22 @@ import { useEffect, useState } from 'react';
 import db from '../firebase/config';
 
 import { Feather } from '@expo/vector-icons';
+import { getAuthState } from '../redux/selectors/selectors';
 
 const Post = ({ item, onCommentPress, onLocationPress }) => {
-  const { location, photo, place, name, id } = item;
+  const { location, photo, place, name, id, likes } = item;
   const [commentQuantity, setCommentQuantity] = useState(0);
+  const [isLikeMine, setIsLikeMine] = useState(false);
+
+  const { userId } = getAuthState();
 
   useEffect(() => {
     getCommentsQuantity();
   }, []);
+
+  useEffect(() => {
+    setIsLikeMine(likes.includes(userId));
+  }, [likes, isLikeMine]);
 
   const getCommentsQuantity = async () => {
     await db
@@ -21,6 +29,21 @@ const Post = ({ item, onCommentPress, onLocationPress }) => {
       .onSnapshot(data => setCommentQuantity(data.docs.length));
   };
 
+  const handleLike = async () => {
+    console.log(userId);
+    const postRef = await db.firestore().collection('posts').doc(id);
+    try {
+      if (!isLikeMine) {
+        await postRef.update({ likes: [...likes, userId] });
+      } else {
+        await postRef.update({ likes: likes.filter(user => user !== userId) });
+      }
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  };
+
   return (
     <View>
       <View style={styles.imageWrapper}>
@@ -29,15 +52,32 @@ const Post = ({ item, onCommentPress, onLocationPress }) => {
       <Text style={styles.name}>{name}</Text>
       <View style={styles.postInfoWrapper}>
         <View style={styles.postInfo}>
-          <TouchableOpacity onPress={() => onCommentPress({ id, photo })}>
-            <Feather
-              name="message-circle"
-              size={24}
-              color={commentQuantity ? '#FF6C00' : '#BDBDBD'}
-              style={styles.icon}
-            />
-            <Text style={styles.commentQuantity}>{commentQuantity}</Text>
-          </TouchableOpacity>
+          <View style={styles.statsBar}>
+            <TouchableOpacity
+              onPress={() => onCommentPress({ id, photo })}
+              style={styles.statIconWrapper}
+            >
+              <Feather
+                name="message-circle"
+                size={24}
+                color={commentQuantity ? '#FF6C00' : '#BDBDBD'}
+                style={styles.icon}
+              />
+              <Text style={styles.commentQuantity}>{commentQuantity}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={handleLike}
+              style={styles.statIconWrapper}
+            >
+              <Feather
+                name="thumbs-up"
+                size={24}
+                color={isLikeMine ? '#FF6C00' : '#BDBDBD'}
+                style={styles.icon}
+              />
+              <Text style={styles.commentQuantity}>{likes.length}</Text>
+            </TouchableOpacity>
+          </View>
           <TouchableOpacity
             onPress={() => onLocationPress(location)}
             style={styles.place}
@@ -78,6 +118,8 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     paddingStart: 28,
   },
+  statsBar: { flexDirection: 'row', gap: 24 },
+  statIconWrapper: { justifyContent: 'center' },
 });
 
 export default Post;

@@ -82,7 +82,11 @@ const HomeScreen = () => {
           ),
         }}
       />
-      <MainStack.Screen name="Profile" component={ProfileScreen} />
+      <MainStack.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{ headerShown: false }}
+      />
     </MainStack.Navigator>
   );
 };

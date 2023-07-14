@@ -107,7 +107,7 @@ const LoginScreen = () => {
           display: focusedField ? 'none' : 'flex',
         }}
       >
-        <CustomButton title="Sign up" onPress={handleSubmit} />
+        <CustomButton title="Sign In" onPress={handleSubmit} />
         <View style={authStyles.underFormTextWrapper}>
           <Text
             style={{

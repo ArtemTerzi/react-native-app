@@ -2,9 +2,10 @@ import { useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import db from '../../firebase/config';
 import { getAuthState } from '../../redux/selectors/selectors';
+import CustomImageBackground from '../../components/CustomImageBackground';
 
 const ProfileScreen = () => {
-  const { userId } = getAuthState();
+  const { userId, login } = getAuthState();
 
   useEffect(() => {
     getUserPosts();
@@ -21,24 +22,28 @@ const ProfileScreen = () => {
   };
 
   return (
-    <View style={styles.mainContainer}>
-      <Text style={styles.underFormText}>ProfileScreen</Text>
-    </View>
+    <CustomImageBackground>
+      <View style={styles.mainContent}>
+        <Text style={styles.userLogin}>{login}</Text>
+      </View>
+    </CustomImageBackground>
   );
 };
 
 const styles = StyleSheet.create({
-  mainContainer: {
+  mainContent: {
     flex: 1,
+    marginHorizontal: 16,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  underFormText: {
+  userLogin: {
     textAlign: 'center',
-    fontSize: 16,
-    lineHeight: 19,
-    color: '#1B4371',
+    fontFamily: 'RobotoBold',
+    fontSize: 30,
+    color: '#212121',
+    marginTop: 92,
   },
 });
 

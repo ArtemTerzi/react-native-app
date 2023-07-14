@@ -101,10 +101,13 @@ const CreatePostsScreen = () => {
 
   const uploadPostToServer = async () => {
     const photo = await uploadPhotoToServer();
+    const postTime = new Date().toUTCString();
+    const likes = [];
+
     await db
       .firestore()
       .collection('posts')
-      .add({ photo, name, place, location, userId, login });
+      .add({ photo, name, place, location, userId, login, postTime, likes });
   };
 
   if (hasPermission === null) {
