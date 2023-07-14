@@ -55,7 +55,7 @@ const CommentsScreen = ({ route }) => {
         </View>
         <View style={{ flex: 1 }}>
           <FlatList
-            style={{ marginTop: 32, marginBottom: 32 }}
+            style={{ marginTop: 32 }}
             data={allComments}
             keyExtractor={item => item.id}
             renderItem={({ item }) => <Comment item={item} />}

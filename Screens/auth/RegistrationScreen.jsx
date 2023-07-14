@@ -10,12 +10,14 @@ import {
 import { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
+import { useDispatch } from 'react-redux';
+import db from '../../firebase/config';
+import uuid from 'react-native-uuid';
 
 import CustomButton from '../../components/CustomButton';
 import CustomImageBackground from '../../components/CustomImageBackground';
 import { authStyles } from './authStyles';
 
-import { useDispatch } from 'react-redux';
 import { authSignUp } from '../../redux/auth/authOperations';
 
 import { AntDesign } from '@expo/vector-icons';
@@ -56,7 +58,22 @@ const RegistrationScreen = () => {
     });
 
     if (!result.canceled) {
-      setState(prev => ({ ...prev, avatar: result.assets[0].uri }));
+      const response = await fetch(result.assets[0].uri);
+      const file = await response.blob();
+      const avatarId = uuid.v4();
+
+      await db.storage().ref(`usersAvatars/${avatarId}`).put(file);
+
+      const processedAvatar = await db
+        .storage()
+        .ref('usersAvatars/')
+        .child(avatarId)
+        .getDownloadURL();
+
+      setState(prev => ({
+        ...prev,
+        avatar: processedAvatar,
+      }));
     }
   };
 
