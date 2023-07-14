@@ -4,12 +4,14 @@ import db from '../firebase/config';
 
 import { Feather } from '@expo/vector-icons';
 import { getAuthState } from '../redux/selectors/selectors';
+import { useNavigation } from '@react-navigation/native';
 
-const Post = ({ item, onCommentPress, onLocationPress }) => {
+const Post = ({ item }) => {
   const { location, photo, place, name, id, likes } = item;
   const [commentQuantity, setCommentQuantity] = useState(0);
   const [isLikeMine, setIsLikeMine] = useState(false);
 
+  const navigation = useNavigation();
   const { userId } = getAuthState();
 
   useEffect(() => {
@@ -30,7 +32,6 @@ const Post = ({ item, onCommentPress, onLocationPress }) => {
   };
 
   const handleLike = async () => {
-    console.log(userId);
     const postRef = await db.firestore().collection('posts').doc(id);
     try {
       if (!isLikeMine) {
@@ -43,6 +44,11 @@ const Post = ({ item, onCommentPress, onLocationPress }) => {
       throw error;
     }
   };
+
+  const onCommentPress = ({ id, photo }) =>
+    navigation.navigate('Comments', { postId: id, photo });
+
+  const onLocationPress = location => navigation.navigate('Map', { location });
 
   return (
     <View>

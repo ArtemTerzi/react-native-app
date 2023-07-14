@@ -4,7 +4,6 @@ import {
   View,
   Keyboard,
   TouchableOpacity,
-  ImageBackground,
   StyleSheet,
 } from 'react-native';
 import { useEffect, useState } from 'react';
@@ -21,8 +20,7 @@ import CustomImageBackground from '../../components/CustomImageBackground';
 import { authStyles } from './authStyles';
 
 import { authSignUp } from '../../redux/auth/authOperations';
-
-import { AntDesign } from '@expo/vector-icons';
+import PhotoHolder from '../../components/PhotoHolder';
 
 const initialState = {
   login: '',
@@ -137,26 +135,11 @@ const RegistrationScreen = () => {
         setFocusedField('');
       }}
     >
-      <View>
-        <ImageBackground
-          source={state.avatar ? { uri: state.avatar } : null}
-          style={styles.avatar}
-          imageStyle={{ borderRadius: 16 }}
-        >
-          <TouchableOpacity style={styles.avatarBtn} onPress={uploadAvatar}>
-            {state.avatar ? (
-              <AntDesign
-                name="closecircleo"
-                color="#BDBDBD"
-                size={25}
-                onPress={deleteAvatar}
-              />
-            ) : (
-              <AntDesign name="pluscircleo" color="#FF6C00" size={25} />
-            )}
-          </TouchableOpacity>
-        </ImageBackground>
-      </View>
+      <PhotoHolder
+        uploadAvatar={uploadAvatar}
+        deleteAvatar={deleteAvatar}
+        state={state}
+      />
       <Text style={authStyles.titleText}>Registration</Text>
       <TextInput
         style={getTextInputStyle('login')}
@@ -243,24 +226,6 @@ const RegistrationScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  avatar: {
-    position: 'absolute',
-    top: -60,
-    right: '50%',
-    width: 120,
-    height: 120,
-    backgroundColor: '#F6F6F6',
-    borderRadius: 16,
-    elevation: 3,
-    transform: [{ translateX: 60 }],
-  },
-  avatarBtn: {
-    position: 'absolute',
-    right: -10,
-    bottom: 20,
-    backgroundColor: 'white',
-    borderRadius: 50,
-  },
   errorMessage: {
     color: 'white',
     backgroundColor: 'red',

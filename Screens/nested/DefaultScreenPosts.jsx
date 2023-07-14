@@ -1,51 +1,32 @@
-import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
-import Post from '../../components/Post';
 
 import db from '../../firebase/config';
 import MiniUserProfile from '../../components/MiniUserProfile';
+import PostsList from '../../components/PostsList';
+import { sortItemsByPostTime } from '../../services';
 
 const DefaultScreenPosts = () => {
   const [posts, setPosts] = useState([]);
-
-  const navigation = useNavigation();
-
-  const getAllPost = async () => {
-    db.firestore()
-      .collection('posts')
-      .onSnapshot(data =>
-        setPosts(data.docs.map(doc => ({ ...doc.data(), id: doc.id })))
-      );
-  };
 
   useEffect(() => {
     getAllPost();
   }, []);
 
-  const onCommentPress = ({ id, photo }) =>
-    navigation.navigate('Comments', { postId: id, photo });
-
-  const onLocationPress = location => navigation.navigate('Map', { location });
-
-  const onLikePress = id => {};
+  const getAllPost = async () => {
+    db.firestore()
+      .collection('posts')
+      .onSnapshot(data => {
+        const posts = data.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+        setPosts(sortItemsByPostTime(posts, 'dsc'));
+      });
+  };
 
   return (
     <View style={styles.mainContainer}>
       <View style={styles.mainContent}>
         <MiniUserProfile />
-        <FlatList
-          data={posts}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item }) => (
-            <Post
-              item={item}
-              onCommentPress={onCommentPress}
-              onLocationPress={onLocationPress}
-            />
-          )}
-        />
+        <PostsList posts={posts} />
       </View>
     </View>
   );

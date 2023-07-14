@@ -59,7 +59,7 @@ const CreatePostsScreen = () => {
   }, []);
 
   useEffect(() => {
-    if (photo && name && place && location) setIsDisabled(false);
+    if (photo && name && place) setIsDisabled(false);
     else setIsDisabled(true);
   }, [photo, name, place, location]);
 

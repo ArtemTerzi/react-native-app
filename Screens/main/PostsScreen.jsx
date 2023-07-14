@@ -1,37 +1,20 @@
 import { createStackNavigator } from '@react-navigation/stack';
-import { useDispatch } from 'react-redux';
 
 import DefaultScreenPosts from '../nested/DefaultScreenPosts';
 import CommentsScreen from '../nested/CommentsScreen';
 import MapScreen from '../nested/MapScreen';
+import LogOutBtn from '../../components/LogOutBtn';
 
 const NestedScreen = createStackNavigator();
 
-import { Feather } from '@expo/vector-icons';
-import { authSignOut } from '../../redux/auth/authOperations';
-
 const PostsScreen = () => {
-  const dispatch = useDispatch();
-
-  const signOut = () => {
-    dispatch(authSignOut());
-  };
-
   return (
     <NestedScreen.Navigator initialRouteName="DefaultScreen">
       <NestedScreen.Screen
         name="Publications"
         component={DefaultScreenPosts}
         options={{
-          headerRight: () => (
-            <Feather
-              onPress={signOut}
-              name="log-out"
-              size={24}
-              color="#BDBDBD"
-              style={{ marginRight: 16 }}
-            />
-          ),
+          headerRight: () => <LogOutBtn />,
           headerLeft: false,
           headerTitleAlign: 'center',
           headerStyle: {

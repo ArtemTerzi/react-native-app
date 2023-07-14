@@ -5,7 +5,9 @@ import {
   ImageBackground,
 } from 'react-native';
 
-const userAvatars = ({ source }) => {
+import { AntDesign } from '@expo/vector-icons';
+
+const PhotoHolder = ({ uploadAvatar, deleteAvatar, state }) => {
   return (
     <View>
       <ImageBackground
@@ -51,4 +53,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default userAvatars;
+export default PhotoHolder;
