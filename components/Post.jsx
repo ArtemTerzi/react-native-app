@@ -1,9 +1,25 @@
 import { TouchableOpacity, Text, Image, View, StyleSheet } from 'react-native';
+import { useEffect, useState } from 'react';
+import db from '../firebase/config';
 
 import { Feather } from '@expo/vector-icons';
 
 const Post = ({ item, onCommentPress, onLocationPress }) => {
   const { location, photo, place, name, id } = item;
+  const [commentQuantity, setCommentQuantity] = useState(0);
+
+  useEffect(() => {
+    getCommentsQuantity();
+  }, []);
+
+  const getCommentsQuantity = async () => {
+    await db
+      .firestore()
+      .collection('posts')
+      .doc(id)
+      .collection('comments')
+      .onSnapshot(data => setCommentQuantity(data.docs.length));
+  };
 
   return (
     <View>
@@ -17,10 +33,10 @@ const Post = ({ item, onCommentPress, onLocationPress }) => {
             <Feather
               name="message-circle"
               size={24}
-              color="#BDBDBD"
+              color={commentQuantity ? '#FF6C00' : '#BDBDBD'}
               style={styles.icon}
             />
-            <Text style={styles.commentQuantity}>0</Text>
+            <Text style={styles.commentQuantity}>{commentQuantity}</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => onLocationPress(location)}

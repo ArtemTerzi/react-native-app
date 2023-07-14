@@ -17,7 +17,9 @@ const DefaultScreenPosts = () => {
     db.firestore()
       .collection('posts')
       .onSnapshot(data =>
-        setPosts(data.docs.map(doc => ({ ...doc.data(), id: doc.id })))
+        setPosts(
+          data.docs.reverse().map(doc => ({ ...doc.data(), id: doc.id }))
+        )
       );
   };
 
