@@ -40,11 +40,13 @@ const HomeScreen = () => {
         tabBarHideOnKeyboard: true,
         tabBarShowLabel: false,
         tabBarStyle: {
+          display: route.name === 'CreatePosts' ? 'none' : 'flex',
           borderTopColor: 'rgba(0, 0, 0, 0.30)',
           borderTopWidth: 1,
           height: 60,
         },
         unmountOnBlur: false,
+        tabBarVisibilityAnimationConfig: true,
       })}
     >
       <MainStack.Screen
