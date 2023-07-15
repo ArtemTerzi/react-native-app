@@ -12,6 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import * as MediaLibrary from 'expo-media-library';
 import * as Location from 'expo-location';
+import * as ImagePicker from 'expo-image-picker';
 
 import CustomButton from '../../components/CustomButton';
 
@@ -110,6 +111,17 @@ const CreatePostsScreen = () => {
       .add({ photo, name, place, location, userId, login, postTime, likes });
   };
 
+  const loadPhoto = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    if (!result.canceled) {
+      setPhoto(result.assets[0].uri);
+    }
+  };
+
   if (hasPermission === null) {
     return <View />;
   }
@@ -136,9 +148,11 @@ const CreatePostsScreen = () => {
           </Camera>
         </View>
         <View>
-          <Text style={styles.underCameraText}>
-            {photo ? 'Edit photo' : 'Upload a photo'}
-          </Text>
+          <TouchableOpacity onPress={loadPhoto}>
+            <Text style={styles.underCameraText}>
+              {photo ? 'Edit photo' : 'Upload a photo'}
+            </Text>
+          </TouchableOpacity>
           <TextInput
             placeholder="Name..."
             style={styles.nameInput}
