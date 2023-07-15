@@ -4,6 +4,7 @@ import { View, StyleSheet } from 'react-native';
 import PostsScreen from '../main/PostsScreen';
 import CreatePostsScreen from '../main/CreatePostsScreen';
 import ProfileScreen from '../main/ProfileScreen';
+import LogOutBtn from '../../components/LogOutBtn';
 
 import { Feather, Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -52,7 +53,15 @@ const HomeScreen = () => {
       <MainStack.Screen
         name="Posts"
         component={PostsScreen}
-        options={{ headerShown: false }}
+        options={{
+          headerRight: () => <LogOutBtn />,
+          headerLeft: false,
+          headerTitleAlign: 'center',
+          headerStyle: {
+            borderBottomColor: 'rgba(0, 0, 0, 0.30)',
+            borderBottomWidth: 1,
+          },
+        }}
       />
 
       <MainStack.Screen
@@ -75,7 +84,7 @@ const HomeScreen = () => {
           headerTitleAlign: 'center',
           headerLeft: () => (
             <Feather
-              onPress={() => navigation.navigate('Publications')}
+              onPress={() => navigation.navigate('Posts')}
               name="arrow-left"
               size={24}
               color="rgba(33, 33, 33, 0.8)"

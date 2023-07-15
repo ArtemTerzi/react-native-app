@@ -1,7 +1,7 @@
 import { FlatList } from 'react-native-gesture-handler';
 import Post from './Post';
 
-const PostsList = ({ posts, onCommentPress, onLocationPress }) => {
+const PostsList = ({ posts }) => {
   return (
     <FlatList
       data={posts}

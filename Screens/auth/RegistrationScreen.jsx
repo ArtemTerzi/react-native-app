@@ -53,9 +53,7 @@ const RegistrationScreen = () => {
     let { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
     if (status !== 'granted') {
-      console.log(
-        'Разрешение на использование медиабиблиотеки не предоставлено'
-      );
+      console.log('Success');
       return;
     }
 

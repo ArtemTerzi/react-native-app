@@ -80,7 +80,7 @@ const CreatePostsScreen = () => {
 
   const sendPhoto = async () => {
     await uploadPostToServer();
-    navigation.navigate('Publications');
+    navigation.navigate('Posts');
   };
 
   const uploadPhotoToServer = async () => {
