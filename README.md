@@ -4,7 +4,7 @@
 
 [LINK](https://expo.dev/accounts/drabing/projects/my-app/builds/c997b0c4-90d3-4bb5-9c80-0393be223dcd)
 
-![QR](./assets/build//QR.PNG)
+![QR](./assets/build//QR.png)
 
 ## Link for expo: 'exp://exp.host/@drabing/my-app?release-channel=drabing-release'
 
