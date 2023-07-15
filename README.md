@@ -6,7 +6,8 @@
 
 ![QR](./assets/build//QR.PNG)
 
-[Link for expo](exp://exp.host/@drabing/my-app?release-channel=drabing-release)
+## Link for expo: 'exp://exp.host/@drabing/my-app?release-channel=drabing-release'
+
 ![QR for EXPO](./assets/build/expoQR.png)
 
 | Status    | Start time           | Availability |
