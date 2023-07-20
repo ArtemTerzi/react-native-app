@@ -6,6 +6,10 @@
 
 ![QR](./assets/build//QR.png)
 
+| Status    | Start time            | Availability |
+| --------- | --------------------- | ------------ |
+| Available | Jul 17, 2023 12:36 AM | 29 days      |
+
 ## Link for expo: 'exp://exp.host/@drabing/my-app?release-channel=drabing-release'
 
 ![QR for EXPO](./assets/build/expoQR.png)
